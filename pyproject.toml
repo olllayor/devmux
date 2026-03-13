@@ -1,0 +1,38 @@
+[build-system]
+requires = ["setuptools>=45", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "agenix"
+version = "0.2.0"
+description = "A tmux session manager purpose-built for AI agent CLIs"
+authors = [
+    {name = "Ollayor", email = "ollayor@example.com"}
+]
+dependencies = [
+    "libtmux>=0.8.2",
+    "PyYAML>=5.4",
+    "click>=8.0"
+]
+readme = "README.md"
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+Homepage = "https://github.com/ollayor/agenix"
+
+[project.scripts]
+agenix = "agenix.cli.main:main"
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0",
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["agenix*"]

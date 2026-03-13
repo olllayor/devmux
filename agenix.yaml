@@ -1,0 +1,32 @@
+workspaces:
+  backend:
+    layout: trio
+    cwd: .
+    panes:
+      - name: planner
+        role: agent
+        command: "sleep 100"
+      - name: builder
+        role: agent
+        command: "sleep 100"
+      - name: logs
+        role: logs
+        command: "sleep 100"
+
+  full-stack:
+    layout: quad
+    panes:
+      - name: frontend
+        role: agent
+        command: "sleep 100"
+        cwd: .
+      - name: backend
+        role: agent
+        command: "sleep 100"
+        cwd: .
+      - name: tests
+        role: tests
+        command: "sleep 100"
+      - name: logs
+        role: logs
+        command: "sleep 100"
