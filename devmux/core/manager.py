@@ -212,7 +212,10 @@ class SessionManager:
         return workspace
 
     def _find_session(self, workspace_name: str) -> Session | None:
-        return self.server.sessions.get(session_name=workspace_name)
+        try:
+            return self.server.sessions.get(session_name=workspace_name)
+        except Exception:
+            return None
 
     def _current_session_name(self) -> str | None:
         pane_id = os.environ.get("TMUX_PANE")

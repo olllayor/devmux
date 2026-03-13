@@ -35,7 +35,7 @@ If the repo is not public yet:
 4. Add topics such as:
    `tmux`, `cli`, `developer-tools`, `ai-agents`, `productivity`, `python`
 
-## 2. Create a GitHub release
+## 2. Release flow
 
 For each release:
 
@@ -56,53 +56,54 @@ git tag v0.2.0
 git push origin main --tags
 ```
 
-5. Create a GitHub Release for tag `v0.2.0`.
+5. Stop there. GitHub Actions now does the rest automatically:
 
-Release notes should include:
+- builds the package
+- creates the GitHub Release from the tag
+- publishes to PyPI through Trusted Publishing
 
-- what changed
-- who it is useful for
-- the install command
-- one short example
+You do not need to draft the GitHub Release manually anymore.
 
 ## 3. Publish to PyPI
+
+PyPI publishing is now automated by GitHub Actions on tag push.
 
 Create accounts first:
 
 - [PyPI](https://pypi.org/)
 - [TestPyPI](https://test.pypi.org/) optional but recommended
 
-Install build tools:
+### Automatic publish path
+
+The intended release command is:
+
+```bash
+git add .
+git commit -m "Release v0.2.0"
+git tag v0.2.0
+git push origin main --tags
+```
+
+After that:
+
+- GitHub creates the release
+- GitHub publishes `devmux` to PyPI
+
+### Optional local build check
+
+If you want to sanity-check the build before pushing the tag:
 
 ```bash
 python3 -m pip install --upgrade build twine
 ```
 
-Build the package:
+Build the package locally:
 
 ```bash
 python3 -m build
 ```
 
-Upload to TestPyPI first:
-
-```bash
-python3 -m twine upload --repository testpypi dist/*
-```
-
-Test install from TestPyPI:
-
-```bash
-python3 -m pip install --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple devmux
-```
-
-If that works, upload to PyPI:
-
-```bash
-python3 -m twine upload dist/*
-```
-
-After publish, verify:
+After the automated publish finishes, verify:
 
 ```bash
 python3 -m pip install devmux
@@ -151,7 +152,8 @@ Best launch assets:
 - version bumped
 - tests pass
 - build succeeds
-- PyPI upload succeeds
-- GitHub release created
+- tag pushed
+- GitHub Actions release job succeeds
+- GitHub Actions PyPI publish job succeeds
 - install command verified
 - short demo asset posted

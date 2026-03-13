@@ -54,6 +54,21 @@ def test_resume_calls_attach(monkeypatch) -> None:
     assert fake_manager.attached == ["backend"]
 
 
+def test_attach_missing_session_shows_real_error(monkeypatch) -> None:
+    runner = CliRunner()
+
+    class MissingManager:
+        def attach_session(self, workspace_name):
+            raise RuntimeError(f"Session '{workspace_name}' does not exist.")
+
+    monkeypatch.setattr("devmux.cli.main.SessionManager", lambda: MissingManager())
+
+    result = runner.invoke(cli, ["attach", "codex"])
+
+    assert result.exit_code == 1
+    assert "Session 'codex' does not exist." in result.output
+
+
 def test_start_with_detach_uses_idempotent_manager(monkeypatch, tmp_path: Path) -> None:
     runner = CliRunner()
     fake_manager = FakeManager()

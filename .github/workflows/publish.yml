@@ -1,9 +1,9 @@
 name: Publish to PyPI
 
 on:
-  release:
-    types: [published]
-  workflow_dispatch:
+  push:
+    tags:
+      - "v*"
 
 jobs:
   build:
@@ -29,6 +29,32 @@ jobs:
         with:
           name: python-package-distributions
           path: dist/
+
+  release:
+    runs-on: ubuntu-latest
+    needs: build
+    permissions:
+      contents: write
+
+    steps:
+      - name: Create GitHub release
+        uses: softprops/action-gh-release@v2
+        with:
+          generate_release_notes: true
+          append_body: true
+          body: |
+            ## Install
+
+            ```bash
+            python3 -m pip install devmux
+            ```
+
+            ## Quick start
+
+            ```bash
+            devmux init --preset backend
+            devmux start backend
+            ```
 
   publish:
     runs-on: ubuntu-latest

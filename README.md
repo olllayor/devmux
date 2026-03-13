@@ -237,7 +237,7 @@ Use two distribution paths:
 Recommended rollout order:
 
 1. Push this repo to GitHub with a clean README, license, and tagged release.
-2. Publish version `0.2.0` to PyPI.
+2. Push a version tag like `v0.2.0`; GitHub Actions creates the release and publishes to PyPI.
 3. Share a short demo GIF/video showing `devmux init`, `devmux start`, and `devmux send`.
 4. Post it in places where AI-heavy CLI devs already are: X, Reddit, Hacker News, tmux/devtools communities, Discord/Slack groups, and your own network.
 
