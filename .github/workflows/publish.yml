@@ -18,6 +18,27 @@ jobs:
         with:
           python-version: "3.11"
 
+      - name: Validate tag matches package version
+        run: |
+          python - <<'PY'
+          import os
+          import tomllib
+
+          with open("pyproject.toml", "rb") as pyproject_file:
+              version = tomllib.load(pyproject_file)["project"]["version"]
+
+          tag_name = os.environ["GITHUB_REF_NAME"]
+          expected_tag = f"v{version}"
+
+          if tag_name != expected_tag:
+              raise SystemExit(
+                  f"Tag {tag_name!r} does not match pyproject version {version!r}. "
+                  f"Expected {expected_tag!r}."
+              )
+
+          print(f"Validated release tag {tag_name} for package version {version}.")
+          PY
+
       - name: Install build tools
         run: python -m pip install --upgrade build
 

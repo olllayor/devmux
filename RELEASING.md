@@ -56,6 +56,8 @@ git tag v0.2.0
 git push origin main --tags
 ```
 
+Create the tag from that release commit. If the tag points at an older commit, GitHub Actions will build the older package version and PyPI will reject the upload.
+
 5. Stop there. GitHub Actions now does the rest automatically:
 
 - builds the package
