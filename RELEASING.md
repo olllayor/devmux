@@ -2,6 +2,18 @@
 
 This guide covers how to ship `agenix` so users can discover it, install it, and start using it quickly.
 
+## Trusted Publisher settings
+
+For the PyPI Trusted Publisher form, use:
+
+- `PyPI Project Name`: `agenix`
+- `Owner`: `ollayor`
+- `Repository name`: `agenix`
+- `Workflow name`: `publish.yml`
+- `Environment name`: `pypi`
+
+The workflow file for that form now exists at [.github/workflows/publish.yml](/Users/ollayor/Code/Projects/agenix/.github/workflows/publish.yml).
+
 ## Before you release
 
 Make sure these basics are in place:
