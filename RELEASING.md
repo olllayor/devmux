@@ -51,8 +51,8 @@ python3 -m pytest
 
 ```bash
 git add .
-git commit -m "Release v0.2.0"
-git tag v0.2.0
+git commit -m "Release vX.Y.Z"
+git tag vX.Y.Z
 git push origin main --tags
 ```
 
@@ -81,8 +81,8 @@ The intended release command is:
 
 ```bash
 git add .
-git commit -m "Release v0.2.0"
-git tag v0.2.0
+git commit -m "Release vX.Y.Z"
+git tag vX.Y.Z
 git push origin main --tags
 ```
 

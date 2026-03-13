@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "devmux"
-version = "0.2.1"
+version = "0.2.2"
 description = "A tmux session manager purpose-built for AI agent CLIs"
 authors = [
     {name = "Ollayor", email = "ollayor@example.com"}

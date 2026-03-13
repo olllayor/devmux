@@ -160,12 +160,20 @@ Legacy `agents` configs are still accepted and mapped to `role: agent`.
 
 ```bash
 devmux init [--preset minimal|backend|full-stack] [--config PATH] [--force]
-devmux start <workspace> [--config PATH] [--detach] [--recreate]
+devmux start [<workspace>] [--config PATH] [--preset minimal|backend|full-stack] [--detach] [--recreate]
 devmux attach <workspace>
 devmux resume <workspace>
 devmux ls
 devmux kill <workspace>
 devmux send "<prompt>" [--session NAME] [--all | --role ROLE | --pane NAME ...]
+```
+
+You can also skip editing `devmux.yaml` for a quick start:
+
+```bash
+devmux start my-project --preset backend
+# or, from inside a project directory:
+devmux start --preset backend
 ```
 
 ## Typical workflows
@@ -237,7 +245,7 @@ Use two distribution paths:
 Recommended rollout order:
 
 1. Push this repo to GitHub with a clean README, license, and tagged release.
-2. Push a version tag like `v0.2.0`; GitHub Actions creates the release and publishes to PyPI.
+2. Push a version tag like `vX.Y.Z`; GitHub Actions creates the release and publishes to PyPI.
 3. Share a short demo GIF/video showing `devmux init`, `devmux start`, and `devmux send`.
 4. Post it in places where AI-heavy CLI devs already are: X, Reddit, Hacker News, tmux/devtools communities, Discord/Slack groups, and your own network.
 

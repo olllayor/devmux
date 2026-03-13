@@ -10,7 +10,13 @@ import click
 
 from devmux import __version__
 from devmux.core.manager import SessionManager, SessionManagerError
-from devmux.utils.config import Config, ConfigError, VALID_ROLES, render_preset
+from devmux.utils.config import (
+    Config,
+    ConfigError,
+    VALID_ROLES,
+    load_preset,
+    render_preset,
+)
 
 
 def _load_config(config_path: str) -> Config:
@@ -23,6 +29,33 @@ def _load_config(config_path: str) -> Config:
 def _fail(exc: Exception) -> None:
     click.echo(f"Error: {exc}", err=True)
     raise SystemExit(1) from exc
+
+
+def _resolve_start_request(
+    workspace_name: str | None, config_path: str, preset: str | None
+) -> tuple[str, Config]:
+    if preset:
+        resolved_name = workspace_name or Path.cwd().resolve().name
+        return resolved_name, load_preset(
+            preset, workspace_name=resolved_name, base_dir=Path.cwd().resolve()
+        )
+
+    if not workspace_name:
+        raise click.UsageError(
+            "Missing argument 'WORKSPACE_NAME'. Or pass --preset to start from a built-in template."
+        )
+
+    cfg = _load_config(config_path)
+    if workspace_name in cfg.workspaces:
+        return workspace_name, cfg
+
+    available = ", ".join(sorted(cfg.workspaces)) or "(none)"
+    raise ConfigError(
+        f"Workspace '{workspace_name}' not found in config '{config_path}'. "
+        f"Available workspaces: {available}. "
+        f"Start one of those, add '{workspace_name}' under 'workspaces', "
+        f"or run 'devmux start {workspace_name} --preset backend'."
+    )
 
 
 @click.group()
@@ -68,13 +101,18 @@ def init(preset: str, config: str, force: bool) -> None:
 
 
 @cli.command()
-@click.argument("workspace_name")
+@click.argument("workspace_name", required=False)
 @click.option(
     "--config",
     "-c",
     default="devmux.yaml",
     show_default=True,
     help="Path to config file.",
+)
+@click.option(
+    "--preset",
+    type=click.Choice(["minimal", "backend", "full-stack"]),
+    help="Use a built-in preset without reading devmux.yaml. If WORKSPACE_NAME is omitted, the current directory name is used.",
 )
 @click.option(
     "--detach",
@@ -86,10 +124,16 @@ def init(preset: str, config: str, force: bool) -> None:
     is_flag=True,
     help="Kill any existing session with the same name before creating it again.",
 )
-def start(workspace_name: str, config: str, detach: bool, recreate: bool) -> None:
+def start(
+    workspace_name: str | None,
+    config: str,
+    preset: str | None,
+    detach: bool,
+    recreate: bool,
+) -> None:
     """Create or resume a named workspace."""
     try:
-        cfg = _load_config(config)
+        workspace_name, cfg = _resolve_start_request(workspace_name, config, preset)
         manager = SessionManager()
         result = manager.start_workspace(workspace_name, cfg, recreate=recreate)
 

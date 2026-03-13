@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import pytest
 
-from devmux.utils.config import Config, ConfigError
+from devmux.utils.config import Config, ConfigError, load_preset
 
 
 def test_loads_new_panes_schema(write_config) -> None:
@@ -56,6 +56,15 @@ def test_loads_legacy_agents_schema_as_agent_panes(write_config) -> None:
     assert [pane.name for pane in workspace.panes] == ["planner", "builder"]
     assert all(pane.role == "agent" for pane in workspace.panes)
     assert workspace.panes[1].command == "codex --approval auto"
+
+
+def test_load_preset_rekeys_workspace_name(tmp_path) -> None:
+    config = load_preset("backend", workspace_name="agenix", base_dir=tmp_path)
+
+    assert sorted(config.workspaces) == ["agenix"]
+    workspace = config.workspaces["agenix"]
+    assert workspace.layout == "trio"
+    assert workspace.base_dir == tmp_path.resolve()
 
 
 @pytest.mark.parametrize(

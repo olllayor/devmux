@@ -101,6 +101,67 @@ workspaces:
     assert "detached session 'backend'" in result.output
 
 
+def test_start_with_preset_bootstraps_named_workspace(monkeypatch) -> None:
+    runner = CliRunner()
+    fake_manager = FakeManager()
+    monkeypatch.setattr("devmux.cli.main.SessionManager", lambda: fake_manager)
+
+    result = runner.invoke(cli, ["start", "agenix", "--preset", "backend", "--detach"])
+
+    assert result.exit_code == 0
+    assert fake_manager.started == [("agenix", False, ["agenix"])]
+    assert "detached session 'agenix'" in result.output
+
+
+def test_start_with_preset_uses_current_directory_name(monkeypatch, tmp_path: Path) -> None:
+    runner = CliRunner()
+    fake_manager = FakeManager()
+    project_dir = tmp_path / "agenix"
+    project_dir.mkdir()
+    monkeypatch.chdir(project_dir)
+    monkeypatch.setattr("devmux.cli.main.SessionManager", lambda: fake_manager)
+
+    result = runner.invoke(cli, ["start", "--preset", "backend", "--detach"])
+
+    assert result.exit_code == 0
+    assert fake_manager.started == [("agenix", False, ["agenix"])]
+    assert "detached session 'agenix'" in result.output
+
+
+def test_start_unknown_workspace_shows_available_workspaces(monkeypatch, tmp_path: Path) -> None:
+    runner = CliRunner()
+    config_path = tmp_path / "devmux.yaml"
+    config_path.write_text(
+        """
+workspaces:
+  backend:
+    layout: duo
+    cwd: .
+    panes:
+      - name: planner
+        role: agent
+        command: "claude"
+      - name: builder
+        role: agent
+        command: "codex --approval auto"
+""",
+        encoding="utf-8",
+    )
+
+    class UnusedManager:
+        def start_workspace(self, workspace_name, config, recreate=False):  # pragma: no cover
+            raise AssertionError("manager should not be called when the workspace is missing")
+
+    monkeypatch.setattr("devmux.cli.main.SessionManager", lambda: UnusedManager())
+
+    result = runner.invoke(cli, ["start", "agenix", "--config", str(config_path)])
+
+    assert result.exit_code == 1
+    assert "Workspace 'agenix' not found" in result.output
+    assert "Available workspaces: backend" in result.output
+    assert "devmux start agenix --preset backend" in result.output
+
+
 def test_send_enforces_safe_flag_combinations(monkeypatch) -> None:
     runner = CliRunner()
     fake_manager = FakeManager()

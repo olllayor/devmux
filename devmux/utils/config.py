@@ -99,7 +99,17 @@ class Config:
     def load(cls, path: Path) -> "Config":
         with path.open("r", encoding="utf-8") as handle:
             data = yaml.safe_load(handle) or {}
+        return cls.from_mapping(data, base_dir=path.parent.resolve())
 
+    @classmethod
+    def from_text(cls, raw: str, base_dir: Path | None = None) -> "Config":
+        data = yaml.safe_load(raw) or {}
+        return cls.from_mapping(data, base_dir=base_dir)
+
+    @classmethod
+    def from_mapping(
+        cls, data: dict[str, Any], base_dir: Path | None = None
+    ) -> "Config":
         if not isinstance(data, dict):
             raise ConfigError("The config file must contain a top-level mapping.")
 
@@ -122,7 +132,7 @@ class Config:
                 layout=layout,
                 cwd=workspace_cwd,
                 panes=panes,
-                base_dir=path.parent.resolve(),
+                base_dir=(base_dir or Path.cwd()).resolve(),
             )
             workspace.validate(workspace_name)
             workspaces[workspace_name] = workspace
@@ -228,3 +238,16 @@ workspaces:
             f"Unknown preset '{preset}'. Choose one of: minimal, backend, full-stack."
         )
     return presets[preset]
+
+
+def load_preset(
+    preset: str, workspace_name: str, base_dir: Path | None = None
+) -> Config:
+    data = yaml.safe_load(render_preset(preset)) or {}
+    workspaces_data = data.get("workspaces", {})
+    if not isinstance(workspaces_data, dict) or not workspaces_data:
+        raise ConfigError(f"Preset '{preset}' did not define any workspaces.")
+
+    _, workspace_template = next(iter(workspaces_data.items()))
+    data["workspaces"] = {workspace_name: workspace_template}
+    return Config.from_mapping(data, base_dir=base_dir)
