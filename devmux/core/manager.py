@@ -11,7 +11,7 @@ from libtmux.pane import Pane
 from libtmux.session import Session
 from libtmux.window import Window
 
-from agenix.utils.config import Config, ConfigError, PaneConfig, WorkspaceConfig
+from devmux.utils.config import Config, ConfigError, PaneConfig, WorkspaceConfig
 
 
 class SessionManagerError(RuntimeError):
@@ -165,8 +165,8 @@ class SessionManager:
     ) -> None:
         pane_path = pane_config.resolved_cwd(workspace.cwd, workspace.base_dir)
         pane.set_title(pane_config.name)
-        pane.set_option("@agenix_name", pane_config.name, scope=OptionScope.Pane)
-        pane.set_option("@agenix_role", pane_config.role, scope=OptionScope.Pane)
+        pane.set_option("@devmux_name", pane_config.name, scope=OptionScope.Pane)
+        pane.set_option("@devmux_role", pane_config.role, scope=OptionScope.Pane)
         pane.send_keys(f"cd {self._shell_quote(str(pane_path))}", enter=True)
         pane.send_keys(pane_config.command, enter=True)
 
@@ -225,11 +225,11 @@ class SessionManager:
 
     @staticmethod
     def _pane_name(pane: Pane) -> str:
-        return str(pane.show_option("@agenix_name", scope=OptionScope.Pane) or pane.pane_title)
+        return str(pane.show_option("@devmux_name", scope=OptionScope.Pane) or pane.pane_title)
 
     @staticmethod
     def _pane_role(pane: Pane) -> str:
-        return str(pane.show_option("@agenix_role", scope=OptionScope.Pane) or "agent")
+        return str(pane.show_option("@devmux_role", scope=OptionScope.Pane) or "agent")
 
     @staticmethod
     def _shell_quote(value: str) -> str:

@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import pytest
 
-from agenix.utils.config import Config, ConfigError
+from devmux.utils.config import Config, ConfigError
 
 
 def test_loads_new_panes_schema(write_config) -> None:

@@ -4,8 +4,8 @@ from pathlib import Path
 
 from click.testing import CliRunner
 
-from agenix.cli.main import cli, main
-from agenix.core.manager import StartResult
+from devmux.cli.main import cli, main
+from devmux.core.manager import StartResult
 
 
 class FakeManager:
@@ -34,7 +34,7 @@ class FakeManager:
 
 def test_init_writes_expected_preset(tmp_path: Path) -> None:
     runner = CliRunner()
-    config_path = tmp_path / "agenix.yaml"
+    config_path = tmp_path / "devmux.yaml"
 
     result = runner.invoke(cli, ["init", "--preset", "minimal", "--config", str(config_path)])
 
@@ -46,7 +46,7 @@ def test_init_writes_expected_preset(tmp_path: Path) -> None:
 def test_resume_calls_attach(monkeypatch) -> None:
     runner = CliRunner()
     fake_manager = FakeManager()
-    monkeypatch.setattr("agenix.cli.main.SessionManager", lambda: fake_manager)
+    monkeypatch.setattr("devmux.cli.main.SessionManager", lambda: fake_manager)
 
     result = runner.invoke(cli, ["resume", "backend"])
 
@@ -57,8 +57,8 @@ def test_resume_calls_attach(monkeypatch) -> None:
 def test_start_with_detach_uses_idempotent_manager(monkeypatch, tmp_path: Path) -> None:
     runner = CliRunner()
     fake_manager = FakeManager()
-    monkeypatch.setattr("agenix.cli.main.SessionManager", lambda: fake_manager)
-    config_path = tmp_path / "agenix.yaml"
+    monkeypatch.setattr("devmux.cli.main.SessionManager", lambda: fake_manager)
+    config_path = tmp_path / "devmux.yaml"
     config_path.write_text(
         """
 workspaces:
@@ -89,7 +89,7 @@ workspaces:
 def test_send_enforces_safe_flag_combinations(monkeypatch) -> None:
     runner = CliRunner()
     fake_manager = FakeManager()
-    monkeypatch.setattr("agenix.cli.main.SessionManager", lambda: fake_manager)
+    monkeypatch.setattr("devmux.cli.main.SessionManager", lambda: fake_manager)
 
     result = runner.invoke(cli, ["send", "hello", "--all", "--role", "logs"])
 
@@ -100,7 +100,7 @@ def test_send_enforces_safe_flag_combinations(monkeypatch) -> None:
 def test_send_routes_to_expected_targets(monkeypatch) -> None:
     runner = CliRunner()
     fake_manager = FakeManager()
-    monkeypatch.setattr("agenix.cli.main.SessionManager", lambda: fake_manager)
+    monkeypatch.setattr("devmux.cli.main.SessionManager", lambda: fake_manager)
 
     result = runner.invoke(cli, ["send", "hello", "--session", "backend", "--pane", "builder"])
 
@@ -110,5 +110,5 @@ def test_send_routes_to_expected_targets(monkeypatch) -> None:
 
 
 def test_main_entrypoint_returns_zero(monkeypatch) -> None:
-    monkeypatch.setattr("agenix.cli.main.cli", lambda: None)
+    monkeypatch.setattr("devmux.cli.main.cli", lambda: None)
     assert main() == 0

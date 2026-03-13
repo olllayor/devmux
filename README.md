@@ -1,6 +1,6 @@
-# agenix
+# devmux
 
-`agenix` is a tmux launcher for developers who use multiple AI agents in the CLI.
+`devmux` is a tmux launcher for developers who use multiple AI agents in the CLI.
 
 It gives you one command to open a repeatable coding cockpit with agent panes, tests, logs, and shell helpers in the right layout and working directories.
 
@@ -13,21 +13,21 @@ If you already work with tools like Claude Code, Codex, Gemini CLI, Aider, test 
 - different repos and directories across panes
 - no shared setup you can reuse every day
 
-`agenix` fixes that by making your workflow reproducible.
+`devmux` fixes that by making your workflow reproducible.
 
 ## What it does
 
-- Launch named workspaces from `agenix.yaml`
+- Launch named workspaces from `devmux.yaml`
 - Create real tmux layouts: `duo`, `trio`, `quad`, `focus`
 - Route prompts safely by pane role or pane name
 - Reuse existing sessions with idempotent `start`
 - Rebuild a workspace with `--recreate`
-- Scaffold starter configs with `agenix init`
+- Scaffold starter configs with `devmux init`
 - Keep runtime behavior generic while still supporting AI-heavy workflows
 
 ## Who it is for
 
-`agenix` is best for developers who:
+`devmux` is best for developers who:
 
 - already use tmux
 - run 2 to 5 CLI agents or helper panes at once
@@ -50,10 +50,10 @@ tmux -V
 
 ### Option 1: Install from PyPI
 
-Use this after you publish `agenix` to PyPI:
+Use this after you publish `devmux` to PyPI:
 
 ```bash
-python3 -m pip install agenix
+python3 -m pip install devmux
 ```
 
 ### Option 2: Install from GitHub right now
@@ -61,14 +61,14 @@ python3 -m pip install agenix
 If you want people to try it before a PyPI release:
 
 ```bash
-python3 -m pip install "git+https://github.com/ollayor/agenix.git"
+python3 -m pip install "git+https://github.com/olllayor/devmux.git"
 ```
 
 ### Option 3: Install locally for development
 
 ```bash
-git clone https://github.com/ollayor/agenix.git
-cd agenix
+git clone https://github.com/olllayor/devmux.git
+cd devmux
 python3 -m pip install -e ".[dev]"
 ```
 
@@ -77,51 +77,51 @@ python3 -m pip install -e ".[dev]"
 Generate a starter config:
 
 ```bash
-agenix init --preset backend
+devmux init --preset backend
 ```
 
 Start the workspace:
 
 ```bash
-agenix start backend
+devmux start backend
 ```
 
 Create or reuse a session without attaching:
 
 ```bash
-agenix start backend --detach
+devmux start backend --detach
 ```
 
 Resume the same workspace later:
 
 ```bash
-agenix resume backend
+devmux resume backend
 ```
 
 Send a prompt to all agent panes in the current session:
 
 ```bash
-agenix send "review the auth flow"
+devmux send "review the auth flow"
 ```
 
 Target a specific role or pane:
 
 ```bash
-agenix send "show me errors" --role logs
-agenix send "run tests" --pane tests
-agenix send "status" --all
+devmux send "show me errors" --role logs
+devmux send "run tests" --pane tests
+devmux send "status" --all
 ```
 
 List or kill sessions:
 
 ```bash
-agenix ls
-agenix kill backend
+devmux ls
+devmux kill backend
 ```
 
 ## Config
 
-Example `agenix.yaml`:
+Example `devmux.yaml`:
 
 ```yaml
 workspaces:
@@ -159,13 +159,13 @@ Legacy `agents` configs are still accepted and mapped to `role: agent`.
 ## Commands
 
 ```bash
-agenix init [--preset minimal|backend|full-stack] [--config PATH] [--force]
-agenix start <workspace> [--config PATH] [--detach] [--recreate]
-agenix attach <workspace>
-agenix resume <workspace>
-agenix ls
-agenix kill <workspace>
-agenix send "<prompt>" [--session NAME] [--all | --role ROLE | --pane NAME ...]
+devmux init [--preset minimal|backend|full-stack] [--config PATH] [--force]
+devmux start <workspace> [--config PATH] [--detach] [--recreate]
+devmux attach <workspace>
+devmux resume <workspace>
+devmux ls
+devmux kill <workspace>
+devmux send "<prompt>" [--session NAME] [--all | --role ROLE | --pane NAME ...]
 ```
 
 ## Typical workflows
@@ -232,13 +232,13 @@ workspaces:
 Use two distribution paths:
 
 1. GitHub for discovery, source, issues, releases, and docs.
-2. PyPI for the simplest install command: `python3 -m pip install agenix`.
+2. PyPI for the simplest install command: `python3 -m pip install devmux`.
 
 Recommended rollout order:
 
 1. Push this repo to GitHub with a clean README, license, and tagged release.
 2. Publish version `0.2.0` to PyPI.
-3. Share a short demo GIF/video showing `agenix init`, `agenix start`, and `agenix send`.
+3. Share a short demo GIF/video showing `devmux init`, `devmux start`, and `devmux send`.
 4. Post it in places where AI-heavy CLI devs already are: X, Reddit, Hacker News, tmux/devtools communities, Discord/Slack groups, and your own network.
 
 The detailed publishing checklist is in [RELEASING.md](/Users/ollayor/Code/Projects/agenix/RELEASING.md).
@@ -259,7 +259,7 @@ python3 -m pytest
 
 ## Scope
 
-`agenix` v0.2 is intentionally focused:
+`devmux` v0.2 is intentionally focused:
 
 - no TUI yet
 - no status bar or health dashboard

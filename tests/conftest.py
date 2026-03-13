@@ -7,18 +7,18 @@ import uuid
 
 import pytest
 
-from agenix.core.manager import SessionManager
+from devmux.core.manager import SessionManager
 
 
 pytestmark = pytest.mark.skipif(
     shutil.which("tmux") is None,
-    reason="tmux is required for agenix integration tests",
+    reason="tmux is required for devmux integration tests",
 )
 
 
 @pytest.fixture
 def tmux_socket_name() -> str:
-    return f"agenix-test-{uuid.uuid4().hex}"
+    return f"devmux-test-{uuid.uuid4().hex}"
 
 
 @pytest.fixture
@@ -33,7 +33,7 @@ def manager(tmux_socket_name: str) -> SessionManager:
 
 @pytest.fixture
 def write_config(tmp_path: Path):
-    def _write(contents: str, file_name: str = "agenix.yaml") -> Path:
+    def _write(contents: str, file_name: str = "devmux.yaml") -> Path:
         path = tmp_path / file_name
         path.write_text(textwrap.dedent(contents).strip() + "\n", encoding="utf-8")
         return path

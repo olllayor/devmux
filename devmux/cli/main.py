@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""agenix - A tmux session manager for AI agent CLIs."""
+"""devmux - A tmux session manager for AI agent CLIs."""
 
 from __future__ import annotations
 
@@ -8,9 +8,9 @@ import sys
 
 import click
 
-from agenix import __version__
-from agenix.core.manager import SessionManager, SessionManagerError
-from agenix.utils.config import Config, ConfigError, VALID_ROLES, render_preset
+from devmux import __version__
+from devmux.core.manager import SessionManager, SessionManagerError
+from devmux.utils.config import Config, ConfigError, VALID_ROLES, render_preset
 
 
 def _load_config(config_path: str) -> Config:
@@ -42,7 +42,7 @@ def cli() -> None:
 @click.option(
     "--config",
     "-c",
-    default="agenix.yaml",
+    default="devmux.yaml",
     show_default=True,
     help="Path to write the generated config file.",
 )
@@ -52,7 +52,7 @@ def cli() -> None:
     help="Overwrite the target config file if it already exists.",
 )
 def init(preset: str, config: str, force: bool) -> None:
-    """Create a starter agenix config."""
+    """Create a starter devmux config."""
     try:
         config_path = Path(config)
         if config_path.exists() and not force:
@@ -72,7 +72,7 @@ def init(preset: str, config: str, force: bool) -> None:
 @click.option(
     "--config",
     "-c",
-    default="agenix.yaml",
+    default="devmux.yaml",
     show_default=True,
     help="Path to config file.",
 )

@@ -3,7 +3,7 @@ requires = ["setuptools>=45", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "agenix"
+name = "devmux"
 version = "0.2.0"
 description = "A tmux session manager purpose-built for AI agent CLIs"
 authors = [
@@ -23,10 +23,10 @@ classifiers = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/ollayor/agenix"
+Homepage = "https://github.com/olllayor/devmux"
 
 [project.scripts]
-agenix = "agenix.cli.main:main"
+devmux = "devmux.cli.main:main"
 
 [project.optional-dependencies]
 dev = [
@@ -35,4 +35,4 @@ dev = [
 
 [tool.setuptools.packages.find]
 where = ["."]
-include = ["agenix*"]
+include = ["devmux*"]

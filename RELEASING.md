@@ -1,14 +1,14 @@
-# Releasing agenix
+# Releasing devmux
 
-This guide covers how to ship `agenix` so users can discover it, install it, and start using it quickly.
+This guide covers how to ship `devmux` so users can discover it, install it, and start using it quickly.
 
 ## Trusted Publisher settings
 
 For the PyPI Trusted Publisher form, use:
 
-- `PyPI Project Name`: `agenix`
-- `Owner`: `ollayor`
-- `Repository name`: `agenix`
+- `PyPI Project Name`: `devmux`
+- `Owner`: `olllayor`
+- `Repository name`: `devmux`
 - `Workflow name`: `publish.yml`
 - `Environment name`: `pypi`
 
@@ -22,13 +22,13 @@ Make sure these basics are in place:
 - the repo has a real license file
 - `python3 -m pytest` passes
 - `python3 -m pip install -e ".[dev]"` works in a clean environment
-- `./venv/bin/agenix --help` or `agenix --help` works after install
+- `./venv/bin/devmux --help` or `devmux --help` works after install
 
 ## 1. Publish the GitHub repo
 
 If the repo is not public yet:
 
-1. Create a GitHub repository named `agenix`.
+1. Create a GitHub repository named `devmux`.
 2. Push the code.
 3. Add a short repo description:
    `A tmux launcher for multi-agent CLI development workflows`
@@ -93,7 +93,7 @@ python3 -m twine upload --repository testpypi dist/*
 Test install from TestPyPI:
 
 ```bash
-python3 -m pip install --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple agenix
+python3 -m pip install --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple devmux
 ```
 
 If that works, upload to PyPI:
@@ -105,8 +105,8 @@ python3 -m twine upload dist/*
 After publish, verify:
 
 ```bash
-python3 -m pip install agenix
-agenix --help
+python3 -m pip install devmux
+devmux --help
 ```
 
 ## 4. What users should copy-paste
@@ -114,9 +114,9 @@ agenix --help
 Put this in every launch post and release note:
 
 ```bash
-python3 -m pip install agenix
-agenix init --preset backend
-agenix start backend
+python3 -m pip install devmux
+devmux init --preset backend
+devmux start backend
 ```
 
 That is the shortest path from discovery to value.

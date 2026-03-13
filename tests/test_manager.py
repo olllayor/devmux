@@ -5,8 +5,8 @@ import time
 
 import pytest
 
-from agenix.core.manager import SessionManagerError
-from agenix.utils.config import Config
+from devmux.core.manager import SessionManagerError
+from devmux.utils.config import Config
 
 
 def _capture_text(pane) -> str:

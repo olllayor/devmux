@@ -35,7 +35,7 @@ jobs:
     needs: build
     environment:
       name: pypi
-      url: https://pypi.org/p/agenix
+      url: https://pypi.org/p/devmux
     permissions:
       id-token: write
 

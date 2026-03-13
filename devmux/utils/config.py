@@ -13,7 +13,7 @@ VALID_ROLES = {"agent", "logs", "tests", "shell"}
 
 
 class ConfigError(ValueError):
-    """Raised when agenix configuration is invalid."""
+    """Raised when devmux configuration is invalid."""
 
 
 @dataclass(frozen=True)
@@ -171,7 +171,7 @@ class Config:
 
 def render_preset(preset: str) -> str:
     presets = {
-        "minimal": """# agenix v0.2 example config
+        "minimal": """# devmux v0.2 example config
 # Replace the example commands below with the agent CLIs you use daily.
 workspaces:
   minimal:
@@ -185,7 +185,7 @@ workspaces:
         role: agent
         command: "codex --approval auto"
 """,
-        "backend": """# agenix v0.2 example config
+        "backend": """# devmux v0.2 example config
 # The commands are generic examples. Swap in Claude, Codex, Gemini, Aider, tests, or logs as needed.
 workspaces:
   backend:
@@ -202,7 +202,7 @@ workspaces:
         role: logs
         command: "docker compose logs -f"
 """,
-        "full-stack": """# agenix v0.2 example config
+        "full-stack": """# devmux v0.2 example config
 # The layout is tuned for two agents plus live tests and logs.
 workspaces:
   full-stack:
